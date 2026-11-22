@@ -609,6 +609,7 @@ body {
 const SUPABASE_URL      = 'https://rmjlqngrfgorhcwaarou.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtamxxbmdyZmdvcmhjd2Fhcm91Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1NTI4NjIsImV4cCI6MjEwMjEyODg2Mn0.sQazP8j9mxG7iXP66_2PXWZmE7sSCk0KXcu_SLs4H_c';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  db: { schema: 'jogo_confea' },
   realtime: { params: { eventsPerSecond: 10 } }
 });
 
@@ -694,11 +695,11 @@ function scheduleRankingRefetch() {
 /* ================== REALTIME ================== */
 function subscribeAll() {
   sb.channel('panel-rt')
-    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'suggestions' }, p => onNewSuggestion(p.new))
-    .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'suggestions' }, p => onDeleteSuggestion(p.old))
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'players' }, () => scheduleRankingRefetch())
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'player_phones' }, () => scheduleRankingRefetch())
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'player_badges' }, () => scheduleRankingRefetch())
+    .on('postgres_changes', { event: 'INSERT', schema: 'jogo_confea', table: 'suggestions' }, p => onNewSuggestion(p.new))
+    .on('postgres_changes', { event: 'DELETE', schema: 'jogo_confea', table: 'suggestions' }, p => onDeleteSuggestion(p.old))
+    .on('postgres_changes', { event: '*', schema: 'jogo_confea', table: 'players' }, () => scheduleRankingRefetch())
+    .on('postgres_changes', { event: '*', schema: 'jogo_confea', table: 'player_phones' }, () => scheduleRankingRefetch())
+    .on('postgres_changes', { event: '*', schema: 'jogo_confea', table: 'player_badges' }, () => scheduleRankingRefetch())
     .subscribe();
 }
 
